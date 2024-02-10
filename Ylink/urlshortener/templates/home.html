@@ -1,0 +1,64 @@
+{% extends 'base.html' %} 
+
+{% block body %}
+
+<div class="container">
+  <div class="card mt-5">
+    <div class="card-header text-center py-3">
+      <h2>URL Shortner Application <i class="fas fa-link px-2"></i></h2>
+    </div>
+    <div class="px-3 py-4">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="row g-1">
+          <div class="col-10">{{form.link}}</div>
+          <div class="col-2">
+            <button class="btn btn-success btn-lg w-100" type="submit">
+              Shorten
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% if errors %}
+  <div class="alert alert-danger mt-4" role="alert">
+    <p>{{errors}}</p>
+  </div>
+  {% endif %}
+
+  {% if shortened_url %}
+
+  <div class="mx-auto text-center mt-5">
+    <h2 class="text-danger">Your shortened Url</h2>
+    <p> {{link}}<i class="fas fa-arrow-right px-2"></i></p>
+    <a href="{{shortened_url}}" class="" target="_blank">{{shortened_url}}  <i class="fas fa-external-link-alt"></i></a>
+  </div>
+  {% endif %}
+
+  {% comment %} {% if allLinks %} {% endcomment %}
+
+    <div class="mt-5">
+        <h2 class="text-center">All Shortened Links</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                <th scope="col">Original URL</th>
+                <th scope="col">Shortened URL</th>
+                <th scope="col">Date Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for links in allLinks %}
+                <tr>
+                <td><a href="{{links.link}}" target="_blank">{{links.link}}</a></td>
+                <td><a href="{{domain}}{{links.short}}" target="_blank">{{domain}}{{links.short}}</a></td>
+                <td>{{links.created_at}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+    </div>
+    {% comment %} {% endif %} {% endcomment %}
+</div>
+{% endblock body %}
