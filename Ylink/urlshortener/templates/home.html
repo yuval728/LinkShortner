@@ -1,19 +1,19 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% block body %}
 
 <div class="container">
-  <div class="card mt-5">
+  <div class="card mt-5 bg-dark text-light">
     <div class="card-header text-center py-3">
-      <h2>URL Shortner Application <i class="fas fa-link px-2"></i></h2>
+      <h2>URL Shortener Application <i class="fas fa-link px-2"></i></h2>
     </div>
     <div class="px-3 py-4">
       <form action="" method="POST">
         {% csrf_token %}
-        <div class="row g-1">
-          <div class="col-10">{{form.link}}</div>
-          <div class="col-2">
-            <button class="btn btn-success btn-lg w-100" type="submit">
+        <div class="row g-1 align-items-center">
+          <div class="col-lg-10 col-md-9">{{form.link}}</div>
+          <div class="col-lg-2 col-md-3">
+            <button class="btn btn-primary btn-lg w-100" type="submit">
               Shorten
             </button>
           </div>
@@ -30,35 +30,31 @@
   {% if shortened_url %}
 
   <div class="mx-auto text-center mt-5">
-    <h2 class="text-danger">Your shortened Url</h2>
+    <h2 class="text-primary">Your shortened URL</h2>
     <p> {{link}}<i class="fas fa-arrow-right px-2"></i></p>
     <a href="{{shortened_url}}" class="" target="_blank">{{shortened_url}}  <i class="fas fa-external-link-alt"></i></a>
   </div>
   {% endif %}
 
-  {% comment %} {% if allLinks %} {% endcomment %}
-
+  {% if allLinks %}
     <div class="mt-5">
-        <h2 class="text-center">All Shortened Links</h2>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                <th scope="col">Original URL</th>
-                <th scope="col">Shortened URL</th>
-                <th scope="col">Date Created</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for links in allLinks %}
-                <tr>
-                <td><a href="{{links.link}}" target="_blank">{{links.link}}</a></td>
-                <td><a href="{{domain}}{{links.short}}" target="_blank">{{domain}}{{links.short}}</a></td>
-                <td>{{links.created_at}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+      <h2 class="text-center text-light">All Shortened Links</h2>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for link in allLinks %}
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{domain}}{{ link.short }}</h5>
+                <p class="card-text">{{ link.link }}</p>
+                
+                <a href="{{ link.short }}" target="_blank" class="btn btn-primary">Go <i class="fas fa-arrow-right"></i></a>
+                <span class="card-text">visits:{{link.visits}}</span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-    {% comment %} {% endif %} {% endcomment %}
+  {% endif %}
 </div>
 {% endblock body %}
